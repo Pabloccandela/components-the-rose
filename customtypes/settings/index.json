@@ -1,51 +1,57 @@
 {
-  "format": "page",
+  "format": "custom",
   "id": "settings",
+  "label": "settings",
+  "repeatable": false,
+  "status": true,
   "json": {
     "Main": {
-      "uid": {
+      "title_page": {
+        "type": "Text",
         "config": {
-          "label": "UID"
-        },
-        "type": "UID"
+          "label": "Title Page",
+          "placeholder": ""
+        }
       },
-      "slices": {
-        "config": {
-          "choices": {}
-        },
-        "fieldset": "Slice Zone",
-        "type": "Slices"
-      }
-    },
-    "SEO & Metadata": {
       "meta_description": {
+        "type": "Text",
         "config": {
           "label": "Meta Description",
-          "placeholder": "A brief summary of the page"
-        },
-        "type": "Text"
+          "placeholder": ""
+        }
       },
-      "meta_image": {
+      "navigation": {
+        "type": "Group",
         "config": {
-          "constraint": {
-            "height": 1260,
-            "width": 2400
-          },
-          "label": "Meta Image",
+          "label": "Navigation",
+          "repeat": true,
+          "fields": {
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Link",
+                "placeholder": "",
+                "select": null
+              }
+            },
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "label",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "image": {
+        "type": "Image",
+        "config": {
+          "label": "image",
+          "constraint": {},
           "thumbnails": []
-        },
-        "type": "Image"
-      },
-      "meta_title": {
-        "config": {
-          "label": "Meta Title",
-          "placeholder": "A title of the page used for social media and search engines"
-        },
-        "type": "Text"
+        }
       }
     }
-  },
-  "label": "settings",
-  "repeatable": true,
-  "status": true
+  }
 }

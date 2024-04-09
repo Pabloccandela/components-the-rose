@@ -5,157 +5,96 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
 /**
- * Item in *card → Navigation*
+ * Item in *settings → Navigation*
  */
-export interface CardDocumentDataNavigationItem {
+export interface SettingsDocumentDataNavigationItem {
   /**
-   * Link field in *card → Navigation*
+   * Link field in *settings → Navigation*
    *
    * - **Field Type**: Link
    * - **Placeholder**: *None*
-   * - **API ID Path**: card.navigation[].link
+   * - **API ID Path**: settings.navigation[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
   link: prismic.LinkField;
 
   /**
-   * Label field in *card → Navigation*
+   * label field in *settings → Navigation*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: card.navigation[].label
+   * - **API ID Path**: settings.navigation[].label
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   label: prismic.KeyTextField;
 }
 
 /**
- * Content for card documents
- */
-interface CardDocumentData {
-  /**
-   * Card Title field in *card*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: card.card_title
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  card_title: prismic.KeyTextField;
-
-  /**
-   * Card Meta Description field in *card*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: card.meta_description
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  meta_description: prismic.KeyTextField;
-
-  /**
-   * Card Image field in *card*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: card.card_image
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#image
-   */
-  card_image: prismic.ImageField<never>;
-
-  /**
-   * Navigation field in *card*
-   *
-   * - **Field Type**: Group
-   * - **Placeholder**: *None*
-   * - **API ID Path**: card.navigation[]
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#group
-   */
-  navigation: prismic.GroupField<Simplify<CardDocumentDataNavigationItem>>;
-}
-
-/**
- * card document from Prismic
- *
- * - **API ID**: `card`
- * - **Repeatable**: `true`
- * - **Documentation**: https://prismic.io/docs/custom-types
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type CardDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithUID<Simplify<CardDocumentData>, "card", Lang>;
-
-type SettingsDocumentDataSlicesSlice = never;
-
-/**
  * Content for settings documents
  */
 interface SettingsDocumentData {
   /**
-   * Slice Zone field in *settings*
+   * Title Page field in *settings*
    *
-   * - **Field Type**: Slice Zone
+   * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: settings.slices[]
+   * - **API ID Path**: settings.title_page
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#slices
+   * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  slices: prismic.SliceZone<SettingsDocumentDataSlicesSlice> /**
+  title_page: prismic.KeyTextField;
+
+  /**
    * Meta Description field in *settings*
    *
    * - **Field Type**: Text
-   * - **Placeholder**: A brief summary of the page
+   * - **Placeholder**: *None*
    * - **API ID Path**: settings.meta_description
-   * - **Tab**: SEO & Metadata
+   * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#key-text
-   */;
+   */
   meta_description: prismic.KeyTextField;
 
   /**
-   * Meta Image field in *settings*
+   * Navigation field in *settings*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.navigation[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  navigation: prismic.GroupField<Simplify<SettingsDocumentDataNavigationItem>>;
+
+  /**
+   * image field in *settings*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
-   * - **API ID Path**: settings.meta_image
-   * - **Tab**: SEO & Metadata
+   * - **API ID Path**: settings.image
+   * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#image
    */
-  meta_image: prismic.ImageField<never>;
-
-  /**
-   * Meta Title field in *settings*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A title of the page used for social media and search engines
-   * - **API ID Path**: settings.meta_title
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  meta_title: prismic.KeyTextField;
+  image: prismic.ImageField<never>;
 }
 
 /**
  * settings document from Prismic
  *
  * - **API ID**: `settings`
- * - **Repeatable**: `true`
+ * - **Repeatable**: `false`
  * - **Documentation**: https://prismic.io/docs/custom-types
  *
  * @typeParam Lang - Language API ID of the document.
  */
 export type SettingsDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithUID<
+  prismic.PrismicDocumentWithoutUID<
     Simplify<SettingsDocumentData>,
     "settings",
     Lang
   >;
 
-export type AllDocumentTypes = CardDocument | SettingsDocument;
+export type AllDocumentTypes = SettingsDocument;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -167,12 +106,9 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
-      CardDocument,
-      CardDocumentData,
-      CardDocumentDataNavigationItem,
       SettingsDocument,
       SettingsDocumentData,
-      SettingsDocumentDataSlicesSlice,
+      SettingsDocumentDataNavigationItem,
       AllDocumentTypes,
     };
   }
